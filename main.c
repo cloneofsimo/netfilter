@@ -5,7 +5,7 @@
 #include <linux/types.h>
 #include <linux/netfilter.h>		/* for NF_ACCEPT */
 #include <errno.h>
-
+#include <libnet.h>
 #include <libnetfilter_queue/libnetfilter_queue.h>
 
 void dump(unsigned char* buf, int size) {
@@ -92,12 +92,7 @@ static int cb(struct nfq_q_handle* qh, struct nfgenmsg* nfmsg,
     struct libnet_tcp_hdr* tcp_header;
 
 
-    // parse accordingly, from pkt_data
-    l = libnet_init(LIBNET_LINK_ADV, NULL, errbuf);
-    if (l == NULL) {
-        fprintf(stderr, "libnet_init() failed: %s", errbuf);
-        exit(EXIT_FAILURE);
-    }
+
     ip_header = (struct libnet_ipv4_hdr*)pkt_data;
     tcp_header = (struct libnet_tcp_hdr*)(pkt_data + sizeof(struct libnet_ipv4_hdr));
 
